@@ -2055,7 +2055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16662f1d230dd584c86e89bc2d050a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3.5
   jumpForce: 10
   countJump: 0
   sizeSlide: {x: 0.6, y: 1}
