@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
         isDead = false;
         isJumping = false;
 
-        jumpForce = 10; // default jumpforce
-        speed = 5; // default speed
+        jumpForce = 11; // default jumpforce
+        speed = 6; // default speed
     }
     private void Update()
     {
@@ -34,9 +34,7 @@ public class PlayerController : MonoBehaviour
     private void Moving()
     {
         direction = Input.GetAxis("Horizontal");
-        Vector2 position = transform.position;
-        position.x += direction * speed * Time.deltaTime;
-        transform.position = position;
+        rb.velocity = new Vector2(direction*speed,rb.velocity.y);
 
         if(direction != 0 ) 
         {
@@ -46,6 +44,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isRun", true);
             animator.SetBool("isIdle", false);
             animator.SetBool("isJump", false);
+            animator.SetBool("isHurt", false);
         }
         else
         {
@@ -53,6 +52,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isRun", false);
             animator.SetBool("isIdle", true);
             animator.SetBool("isJump", false);
+            animator.SetBool("isHurt", false);
         }
 
     }
@@ -67,23 +67,40 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isJump", true);
         animator.SetBool("isRun", false);
         animator.SetBool("isIdle", false);
+        animator.SetBool("isHurt", false);
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Ground"))
-        {
+        //if (collision.collider.CompareTag("Ground"))
+        //{
             countJump = 0;
             isJumping = false;
             animator.SetBool("isJump", false);
             animator.SetBool("isRun", false);
             animator.SetBool("isIdle", true);
-        }
-        if (collision.collider.CompareTag("Trap"))
+            animator.SetBool("isHurt", false);
+        //}
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Trap"))
         {
-            isDead = true;
+            HealthController.d_health--;
+            animator.SetBool("isJump", false);
+            animator.SetBool("isRun", false);
+            animator.SetBool("isIdle", false);
+            animator.SetBool("isHurt", true);
+            if (HealthController.d_health <= 0)
+            {
+                isDead = true;
+            }
+        }
+        if (collision.CompareTag("Finish"))
+        {
+            GameController.isWin = true;
         }
     }
-
 
 }

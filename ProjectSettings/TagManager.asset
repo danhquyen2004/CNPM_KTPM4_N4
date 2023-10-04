@@ -8,6 +8,7 @@ TagManager:
   - Trap
   - GameOver
   - Pause
+  - Win
   layers:
   - Default
   - TransparentFX

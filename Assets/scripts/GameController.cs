@@ -3,15 +3,20 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public GameObject player;
+    public static bool isWin;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private GameObject pause;
+    [SerializeField] private GameObject win;
     private void Start()
     {
         Time.timeScale = 1;
+        isWin = false;
         gameOver = GameObject.FindWithTag("GameOver");
         pause = GameObject.FindWithTag("Pause");
+        win = GameObject.FindWithTag("Win");
         gameOver.SetActive(false);
         pause.SetActive(false);
+        win.SetActive(false);
     }
     private void FixedUpdate()
     {
@@ -22,7 +27,7 @@ public class GameController : MonoBehaviour
             ResumeGame();
             UI_Controller.isResume = false;
         }
-        Debug.Log(UI_Controller.isResume);
+        WinGame();
     }
     private void EndGame()
     {
@@ -41,6 +46,12 @@ public class GameController : MonoBehaviour
     {
         pause.SetActive(false);
         //Time.timeScale = 1;
-        PlayerController.speed = 5;
+        PlayerController.speed = 6;
+    }
+    private void WinGame()
+    {
+        if (!isWin) return;
+        PlayerController.speed = 0;
+        win.SetActive(true);
     }
 }
