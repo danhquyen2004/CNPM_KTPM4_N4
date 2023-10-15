@@ -9,6 +9,8 @@ TagManager:
   - GameOver
   - Pause
   - Win
+  - Heart
+  - Dead
   layers:
   - Default
   - TransparentFX

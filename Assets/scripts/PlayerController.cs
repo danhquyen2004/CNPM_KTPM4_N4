@@ -34,9 +34,9 @@ public class PlayerController : MonoBehaviour
     private void Moving()
     {
         direction = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(direction*speed,rb.velocity.y);
+        rb.velocity = new Vector2(direction * speed, rb.velocity.y);
 
-        if(direction != 0 ) 
+        if (direction != 0)
         {
             if (direction < 0) transform.localScale = new Vector3(-1, 1, 1);
             else transform.localScale = new Vector3(1, 1, 1);
@@ -72,16 +72,16 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.collider.CompareTag("Ground"))
-        //{
-            countJump = 0;
-            isJumping = false;
-            animator.SetBool("isJump", false);
-            animator.SetBool("isRun", false);
-            animator.SetBool("isIdle", true);
-            animator.SetBool("isHurt", false);
-        //}
-
+        if(collision.collider.CompareTag("Dead"))
+        {
+            isDead = true;
+        }
+        countJump = 0;
+        isJumping = false;
+        animator.SetBool("isJump", false);
+        animator.SetBool("isRun", false);
+        animator.SetBool("isIdle", true);
+        animator.SetBool("isHurt", false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -100,6 +100,17 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("Finish"))
         {
             GameController.isWin = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Heart"))
+        {
+            if (!Input.GetKeyDown(KeyCode.M)) return;
+            if (HealthController.d_health >= 3) return;
+            HealthController.d_health++;
+            Destroy(collision.gameObject);
         }
     }
 
